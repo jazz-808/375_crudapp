@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Task List</h1>
+
+        <!-- Add Task Form -->
+        <form action="/add" method="POST" id="task-form">
+            <input type="text" name="title" placeholder="Title" required>
+            <textarea name="description" placeholder="Description" required></textarea>
+            <button type="submit">Add Task</button>
+        </form>
+
+        <!-- Task List -->
+        <ul id="task-list">
+            {% for task in tasks %}
+                <li id="task-{{ task.id }}">
+                    <h3>{{ task.title }}</h3>
+                    <p>{{ task.description }}</p>
+                    <!-- Updated Edit Button -->
+                    <button onclick="editTask('{{ task.id }}', '{{ task.title|escape }}', '{{ task.description|escape }}')">Edit</button>
+                    <button onclick="deleteTask('{{ task.id }}')">Delete</button>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Edit Task Modal -->
+        <div id="editModal" style="display:none;">
+            <h3>Edit Task</h3>
+            <form id="edit-form">
+                <input type="text" id="edit-title" required>
+                <textarea id="edit-description" required></textarea>
+                <button type="submit">Save Changes</button>
+            </form>
+            <button onclick="closeEditModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
